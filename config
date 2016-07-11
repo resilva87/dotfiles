@@ -1,0 +1,45 @@
+[global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  title_receive_fg_color = "#35c54f"
+  suppress_multiple_term_dialog = True
+  title_transmit_fg_color = "#32c844"
+[keybindings]
+[profiles]
+  [[default]]
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    background_darkness = 0.78
+    cursor_shape = underline
+    background_image = None
+    cursor_color = "#f0cc09"
+    foreground_color = "#839496"
+    background_color = "#002b36"
+  [[backup]]
+    use_system_font = False
+    cursor_shape = ibeam
+    background_image = None
+    foreground_color = "#ffffff"
+    font = Droid Sans Mono 12
+    background_color = "#300a24"
+    scrollback_infinite = True
+[layouts]
+  [[backup]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
+  [[default]]
+    [[[child0]]]
+      position = 0:0
+      type = Window
+      order = 0
+      parent = ""
+      size = 1920, 1027
+    [[[terminal1]]]
+      profile = default
+      type = Terminal
+      order = 0
+      parent = child0
+[plugins]
