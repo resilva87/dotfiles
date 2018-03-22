@@ -17,7 +17,7 @@ function read_env_file() {
 function start() {
     local env=$1
     local command="docker exec -ti plusql psql"
-    if [[ -z $(docker ps -q -f name=postgres96) ]]
+    if [[ -z $(docker ps -q -f name=plusql) ]]
     then
         echo "Starting postgres container..."
         start_container
