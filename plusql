@@ -1,0 +1,30 @@
+#!/bin/bash
+function start_container() {
+    docker run -v $HOME/plusql:/backups --name plusql -d postgres:9.6
+}
+
+function read_env_file() {
+    local env=$1
+    local file="$HOME/.db/$env"
+    if [[ ! -f "$file" ]]; then
+        echo ""
+    fi
+    local content=$(cat $file)
+    echo $content
+}
+
+
+function start() {
+    local env=$1
+    local command="docker exec -ti plusql psql"
+    if [[ -z $(docker ps -q -f name=postgres96) ]]
+    then
+        echo "Starting postgres container..."
+        start_container
+    fi
+    local options=$(read_env_file $env)
+    local final_command="$command $options"
+    $final_command 
+}
+
+start $1
