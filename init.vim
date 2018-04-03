@@ -1,3 +1,5 @@
+let g:python3_host_prog = '/usr/local/bin/python3'
+
 set nocompatible              " required
 filetype off                  " required
 
@@ -53,7 +55,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -72,14 +73,20 @@ Plugin 'w0rp/ale'
 Plugin 'kablamo/vim-git-log'
 Plugin 'gregsexton/gitv'
 Plugin 'tpope/vim-fugitive'
+Plugin 'Shougo/deoplete.nvim'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
 filetype plugin indent on    " required
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 nmap <F8> :TagbarToggle<CR>
 
+
+" Deoplete Configuration
+let g:deoplete#enable_at_startup = 1
 
 " Vim-Airline Configuration
 let g:airline#extensions#tabline#enabled = 1
