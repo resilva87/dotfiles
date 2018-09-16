@@ -2,6 +2,9 @@
 export GOPATH=$HOME/Workspace/Go
 export JAVA_HOME=$(/usr/libexec/java_home)
 
+export SBT_HOME=$HOME/.sdkman/candidates/sbt/current
+
+export PATH=$SBT_HOME/bin:$PATH
 export PATH=$HOME/Library/Python/3.6/bin:$PATH
 export PATH=$(go env GOPATH)/bin:$PATH
 export PATH=$HOME/Apps/anaconda3/bin:$PATH
@@ -24,7 +27,7 @@ source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+ZSH_THEME="muse"
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -77,9 +80,12 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  docker
 )
 
 source $ZSH/oh-my-zsh.sh
+fpath=(~/.zsh/completion $fpath)
+autoload -Uz compinit && compinit -i
 
 # User configuration
 
