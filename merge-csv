@@ -1,0 +1,19 @@
+#!/bin/bash
+if [ $# -eq 0 ]
+then
+    echo "Please inform output file"
+    exit 1
+fi
+
+outfilename="$1"
+i=0
+for filename in ./*.csv; do 
+ if [ "$filename"  != "$OutFileName" ] ;      # Avoid recursion 
+ then 
+   if [[ $i -eq 0 ]] ; then 
+      head -1  $filename >   $outfilename # Copy header if it is the first file
+   fi
+   tail -n +2  $filename >>  $outfilename # Append from the 2nd line each file
+   i=$(( $i + 1 ))                        # Increase the counter
+ fi
+done
