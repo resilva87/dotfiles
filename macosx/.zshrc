@@ -1,27 +1,25 @@
-# Exports
-export GOPATH=$HOME/Workspace/Go
-export JAVA_HOME=$(/usr/libexec/java_home)
-
-export SBT_HOME=$HOME/.sdkman/candidates/sbt/current
-
-export PATH=$SBT_HOME/bin:$PATH
-export PATH=$HOME/Library/Python/3.6/bin:$PATH
-export PATH=$(go env GOPATH)/bin:$PATH
-export PATH=$HOME/Apps/anaconda3/bin:$PATH
+# If you come from bash you might have to change your $PATH.
 export PATH=$HOME/Apps/bin:$PATH
+export PATH=/Users/vivauser/go/bin:$PATH
+
+source "/Users/vivauser/.sdkman/bin/sdkman-init.sh"
 
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH=/Users/vivauser/.oh-my-zsh
 
-# Path to Google SDK installation
-export GOOGLE_SDK_HOME=$HOME/Downloads/google-cloud-sdk
+export NVM_DIR="$HOME/.nvm"
+source "/usr/local/opt/nvm/nvm.sh"
 
-[[ -f "$GOOGLE_SDK_HOME/path.zsh.inc" ]] && source "$GOOGLE_SDK_HOME/path.zsh.inc"
+alias pods='kubectl get pods -n'
+alias deployments='kubectl get deployments -n'
+alias jobs='kubectl get jobs -n'
 
-[[ -f "$GOOGLE_SDK_HOME/completion.zsh.inc" ]] && source "$GOOGLE_SDK_HOME/completion.zsh.inc"
+alias redis='docker run -it --rm redis redis-cli -p 6379 -h'
 
-# Path to AWS credentials
-source $HOME/.aws/config.sh
+logs() {
+  kubectl -n $1 logs -f $2
+}
+
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
@@ -81,11 +79,11 @@ ZSH_THEME="muse"
 plugins=(
   git
   docker
+  zsh-completions
 )
 
 source $ZSH/oh-my-zsh.sh
-fpath=(~/.zsh/completion $fpath)
-autoload -Uz compinit && compinit -i
+source ~/.bash_profile
 
 # User configuration
 
@@ -116,6 +114,10 @@ autoload -Uz compinit && compinit -i
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+autoload -U compinit && compinit
+
+pyclean () {
+    find . | grep -E "(__pycache__|\.egg-info|build|dist|\.pyc|\.pyo$)" | xargs rm -rf
+}
+
+if which jenv > /dev/null; then eval "$(jenv init -)"; fi
