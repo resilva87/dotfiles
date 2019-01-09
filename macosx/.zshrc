@@ -1,81 +1,7 @@
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/Apps/bin:$PATH
-export PATH=/Users/vivauser/go/bin:$PATH
+export ZSH="/Users/renato/.oh-my-zsh"
 
-source "/Users/vivauser/.sdkman/bin/sdkman-init.sh"
-
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/vivauser/.oh-my-zsh
-
-export NVM_DIR="$HOME/.nvm"
-source "/usr/local/opt/nvm/nvm.sh"
-
-alias pods='kubectl get pods -n'
-alias deployments='kubectl get deployments -n'
-alias jobs='kubectl get jobs -n'
-
-alias redis='docker run -it --rm redis redis-cli -p 6379 -h'
-
-logs() {
-  kubectl -n $1 logs -f $2
-}
-
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="muse"
 
-# Set list of themes to load
-# Setting this variable when ZSH_THEME=random
-# cause zsh load theme from this variable instead of
-# looking in ~/.oh-my-zsh/themes/
-# An empty array have no effect
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
   docker
@@ -83,41 +9,46 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source ~/.bash_profile
+source $HOME/.bash_profile
 
-# User configuration
+alias pods='kubectl get pods -n'
+alias deployments='kubectl get deployments -n'
+alias jobs='kubectl get jobs -n'
+alias redis='docker run -it --rm redis redis-cli -p 6379'
+alias psql='docker run -it --rm -v /tmp:/tmp postgres psql'
+alias sqlcmd='docker run --rm --network=bridge -it mcr.microsoft.com/mssql-tools /opt/mssql-tools/bin/sqlcmd'
 
-# export MANPATH="/usr/local/man:$MANPATH"
+logs() {
+  kubectl -n $1 logs -f $2
+}
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+rollout_history() {
+  kubectl -n $1 rollout history deployment.v1.apps/$2
+}
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+rollout_undo() {
+  kubectl -n $1 rollout undo deployment.v1.apps/$2
+}
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+apply_deploy() {
+  kubectl -n $1 apply -f $2
+}
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+describe_pod() {
+  kubectl -n $1 describe pod $2
+}
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+docker_rm_exited() {
+  docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm
+}
+
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 autoload -U compinit && compinit
 
-pyclean () {
-    find . | grep -E "(__pycache__|\.egg-info|build|dist|\.pyc|\.pyo$)" | xargs rm -rf
-}
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+export JAVA_HOME="$HOME/.jenv/versions/`jenv version-name`"
+alias jenv_set_java_home='export JAVA_HOME="$HOME/.jenv/versions/`jenv version-name`"'
 
-if which jenv > /dev/null; then eval "$(jenv init -)"; fi
+export SBT_OPTS="-Xms1536m -Xmx1536m -XX:+UseG1GC -XX:-UseParNewGC -XX:-UseConcMarkSweepGC"
