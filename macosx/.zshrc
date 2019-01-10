@@ -42,7 +42,12 @@ docker_rm_exited() {
   docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm
 }
 
+pyclean () {
+    find . | grep -E "(__pycache__|\.egg-info|build|dist|\.pyc|\.pyo$)" | xargs rm -rf
+}
+
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
 
 autoload -U compinit && compinit
 
